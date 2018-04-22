@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import * as masks from '../text-masks';
+import { Subject } from 'rxjs/Subject';
+import { filter, takeUntil } from 'rxjs/Operators';
+import { Item } from '../../models/item';
 
 enum WeightCostFormKeys {
   weight = 'weight',
@@ -13,11 +16,14 @@ enum WeightCostFormKeys {
   templateUrl: './ng-weight-input.component.html',
   styleUrls: ['./ng-weight-input.component.scss']
 })
-export class NgWeightInputComponent {
+export class NgWeightInputComponent implements OnInit {
+  isDestroyed$ = new Subject();
   dollarMask = masks.dollarMask;
   unit = 'gram';
   orderForm: FormGroup;
   weightCostInput: FormGroup;
+
+  @Output() selectedItems = new EventEmitter<Item[]>();
 
   constructor(private formBuilder: FormBuilder) {
     this.createOrderForm();
@@ -42,6 +48,15 @@ export class NgWeightInputComponent {
       [WeightCostFormKeys.weight]: ['', Validators.required],
       [WeightCostFormKeys.cost]: ['', Validators.required],
       [WeightCostFormKeys.name]: ['', Validators.required]
+    });
+  }
+
+  ngOnInit() {
+    this.orderForm.valueChanges.pipe(
+      takeUntil(this.isDestroyed$),
+      filter(orderForm => orderForm.items),
+    ).subscribe((items: Item[]) => {
+      this.selectedItems.next(items);
     });
   }
 
