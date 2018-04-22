@@ -1,5 +1,7 @@
+$red: rgb(228, 7, 7);
 $hover-input-border-color: #808080;
-$invalid-border-color: red;
+$invalid-border-color: $red;
+$invalid-text-color: $red;
 
 .saved-item {
   input {
@@ -30,4 +32,8 @@ input {
       }
     }
   }
+}
+
+.danger {
+  color: $invalid-text-color;
 }

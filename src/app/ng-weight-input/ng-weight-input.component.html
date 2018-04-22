@@ -6,12 +6,15 @@
       <div class="form-row d-flex align-items-end">
         <div class="col-md-3">
           <input [placeholder]="weightPlaceholder" type="number" formControlName="weight" class="form-control">
+          <div class="danger" *ngIf="hasWeightRequiredError(i)">Weight is required</div>
         </div>
         <div class="col-md-3">
           <input placeholder="Cost" [textMask]="{mask: dollarMask}" formControlName="cost" class="form-control">
+          <div class="danger" *ngIf="hasCostRequiredError(i)">Cost is required</div>
         </div>
         <div class="col-md-3">
           <input placeholder="Name" formControlName="name" class="form-control">
+          <div class="danger" *ngIf="hasNameRequiredError(i)">Name is required</div>
         </div>
         <div class="col-md-3">
           <button *ngIf="!last" (click)="removeSkew(i)" class="btn btn-danger">Remove</button>
