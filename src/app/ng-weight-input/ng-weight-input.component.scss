@@ -1,0 +1,14 @@
+$hover-input-border-color: #808080;
+
+.saved-item {
+  input {
+    &:not(:focus) {
+      border: 1px solid transparent;
+    }
+
+    &:hover {
+      border: 1px dashed $hover-input-border-color;
+      cursor: pointer;
+    }
+  }
+}
