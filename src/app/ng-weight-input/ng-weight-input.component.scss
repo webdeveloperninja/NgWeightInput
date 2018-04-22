@@ -1,4 +1,5 @@
 $hover-input-border-color: #808080;
+$invalid-border-color: red;
 
 .saved-item {
   input {
@@ -9,6 +10,24 @@ $hover-input-border-color: #808080;
     &:hover {
       border: 1px dashed $hover-input-border-color;
       cursor: pointer;
+    }
+  }
+}
+
+input {
+  &.ng-dirty {
+    &.ng-invalid {
+      border: 1px solid $invalid-border-color;
+    }
+  }
+}
+
+.item-wrapper {
+  &.ng-dirty {
+    &.ng-invalid {
+      input {
+        border: 1px solid $invalid-border-color;
+      }
     }
   }
 }
