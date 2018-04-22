@@ -1,14 +1,26 @@
-<form [formGroup]="weightCostInput">
-  <div class="form-group">
-    <label for="weight">Weight</label>
-    <input formControlName="weight" class="form-control">
+<form [formGroup]="orderForm">
+  <div formArrayName="items" *ngFor="let item of orderForm.get('items').controls; let i = index;">
+    <div [formGroupName]="i">
+      <div class="form-row d-flex align-items-end">
+        <div class="col">
+          <label for="weight">Weight</label>
+          <input formControlName="weight" class="form-control">
+        </div>
+        <div class="col">
+          <label for="cost">Cost</label>
+          <input formControlName="cost" class="form-control">
+        </div>
+        <div class="col">
+          <label for="name">Name</label>
+          <input formControlName="name" class="form-control">
+        </div>
+        <div class="col">
+          <button (click)="addSkew()" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </div>
+
+    Chosen name: {{ orderForm.controls.items.controls[i].controls.name.value }}
   </div>
-  <div class="form-group">
-    <label for="cost">Cost</label>
-    <input formControlName="cost" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input formControlName="name" class="form-control">
-  </div>
+
 </form>
