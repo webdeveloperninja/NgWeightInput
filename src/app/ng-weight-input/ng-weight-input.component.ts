@@ -9,7 +9,6 @@ import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 export class NgWeightInputComponent {
   orderForm: FormGroup;
   weightCostInput: FormGroup;
-  items: FormArray;
 
   constructor(private  formBuilder: FormBuilder) {
     this.createOrderForm();
@@ -37,8 +36,15 @@ export class NgWeightInputComponent {
     });
   }
 
-  addSkew() {
-    this.items = this.orderForm.get('items') as FormArray;
+  get items(): FormArray {
+    return this.orderForm.get('items') as FormArray;
+  }
+
+  addSkew(): void {
     this.items.push(this.createItem());
+  }
+
+  removeSkew(index: number): void {
+    this.items.removeAt(index);
   }
 }
