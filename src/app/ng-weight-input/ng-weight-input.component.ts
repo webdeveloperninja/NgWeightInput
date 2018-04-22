@@ -56,19 +56,19 @@ export class NgWeightInputComponent {
   hasWeightRequiredError(index: number): boolean {
     const weightControl = this.getItemControl(index, WeightCostFormKeys.weight);
 
-    return weightControl.touched && weightControl.errors.required;
+    return weightControl.touched && weightControl.errors && weightControl.errors.required;
   }
 
   hasCostRequiredError(index: number): boolean {
     const costControl = this.getItemControl(index, WeightCostFormKeys.cost);
 
-    return costControl.touched && costControl.errors.required;
+    return costControl.touched && costControl.errors && costControl.errors.required;
   }
 
   hasNameRequiredError(index: number): boolean {
     const nameControl = this.getItemControl(index, WeightCostFormKeys.name);
 
-    return nameControl.touched && nameControl.errors.required;
+    return nameControl.touched && nameControl.errors && nameControl.errors.required;
   }
 
   getItemControl(index: number, controlName: WeightCostFormKeys): FormControl {
