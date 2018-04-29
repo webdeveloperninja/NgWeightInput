@@ -17,7 +17,7 @@ $invalid-text-color: $red;
 }
 
 input {
-  &.ng-dirty {
+  &.ng-touched {
     &.ng-invalid {
       border: 1px solid $invalid-border-color;
     }
@@ -25,7 +25,7 @@ input {
 }
 
 .item-wrapper {
-  &.ng-dirty {
+  &.ng-touched {
     &.ng-invalid {
       input {
         border: 1px solid $invalid-border-color;

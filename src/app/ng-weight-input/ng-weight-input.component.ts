@@ -95,7 +95,6 @@ export class NgWeightInputComponent implements OnInit {
     if (this.isItemValid(index)) {
       this.items.push(this.createItem());
     } else {
-      this.setItemAsDirty(index);
       this.setItemAsTouched(index);
     }
   }
