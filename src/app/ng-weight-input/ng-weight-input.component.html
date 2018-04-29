@@ -1,4 +1,9 @@
 <h3>Set weight prices</h3>
+<div class="row">
+  <div class="col-md-3">Weight</div>
+  <div class="col-md-3">Cost</div>
+  <div class="col-md-3">Name</div>
+</div>
 <form [formGroup]="orderForm">
   <div formArrayName="items" 
     *ngFor="let item of orderForm.get('items').controls; let i = index; let last = last;">
