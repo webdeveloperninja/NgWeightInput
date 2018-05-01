@@ -1,5 +1,8 @@
 <div class="container">
+  <fieldset>
+    <!-- <app-ng-weight-selection></app-ng-weight-selection> -->
+  </fieldset>
   <fieldset [attr.disabled]="disableWeightCost ? '' : null">
-    <app-ng-weight-input></app-ng-weight-input>
+    <app-ng-weight-input [itemsForm]="itemsForm"></app-ng-weight-input>
   </fieldset>
 </div>

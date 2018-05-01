@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import * as masks from '../text-masks';
 import { Subject } from 'rxjs/Subject';
@@ -20,7 +20,11 @@ export class NgWeightInputComponent implements OnInit {
   isDestroyed$ = new Subject();
   dollarMask = masks.dollarMask;
   unit = 'gram';
-  orderForm: FormGroup;
+
+  @Input() itemsForm: FormGroup = this.itemsForm ? this.itemsForm : this.formBuilder.group({
+    items: this.formBuilder.array([this.createWeightCostForm()])
+  });
+
   weightCostInput: FormGroup;
 
   @Output() selectedItems = new EventEmitter<Item[]>();
@@ -30,7 +34,7 @@ export class NgWeightInputComponent implements OnInit {
   }
 
   private createOrderForm(): void {
-    this.orderForm = this.formBuilder.group({
+    this.itemsForm = this.formBuilder.group({
       items: this.formBuilder.array([this.createWeightCostForm()])
     });
   }
@@ -43,8 +47,10 @@ export class NgWeightInputComponent implements OnInit {
     });
   }
 
-  private createItem(): FormGroup {
-    return this.formBuilder.group({
+  public createItem(formBuilder: FormBuilder = null): FormGroup {
+    const builder = formBuilder ? formBuilder : this.formBuilder;
+
+    return builder.group({
       [WeightCostFormKeys.weight]: ['', Validators.required],
       [WeightCostFormKeys.cost]: ['', Validators.required],
       [WeightCostFormKeys.name]: ['', Validators.required]
@@ -52,7 +58,7 @@ export class NgWeightInputComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orderForm.valueChanges.pipe(
+    this.itemsForm.valueChanges.pipe(
       takeUntil(this.isDestroyed$),
       filter(orderForm => orderForm.items),
     ).subscribe((items: Item[]) => {
@@ -61,7 +67,7 @@ export class NgWeightInputComponent implements OnInit {
   }
 
   get items(): FormArray {
-    return this.orderForm.get('items') as FormArray;
+    return this.itemsForm.get('items') as FormArray;
   }
 
   get weightPlaceholder(): string {
@@ -95,6 +101,7 @@ export class NgWeightInputComponent implements OnInit {
     if (this.isItemValid(index)) {
       this.items.push(this.createItem());
     } else {
+      this.setItemAsDirty(index);
       this.setItemAsTouched(index);
     }
   }
