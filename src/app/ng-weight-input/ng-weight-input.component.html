@@ -4,9 +4,9 @@
   <div class="col-md-3">Cost</div>
   <div class="col-md-3">Name</div>
 </div>
-<form [formGroup]="orderForm">
+<form [formGroup]="itemsForm">
   <div formArrayName="items" 
-    *ngFor="let item of orderForm.get('items').controls; let i = index; let last = last;">
+    *ngFor="let item of itemsForm.get('items').controls; let i = index; let last = last;">
     <div [formGroupName]="i" [ngClass]="{'saved-item': !last}" class="mt-3 item-wrapper">
       <div class="form-row d-flex align-items-start">
         <div class="col-md-3">
