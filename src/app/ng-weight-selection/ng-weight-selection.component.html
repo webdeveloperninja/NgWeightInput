@@ -1,5 +1,7 @@
 <form [formGroup]="formGroup">
-  <select >
-    <option>Default</option>
+  <select class="form-control">
+    <option *ngFor="let item of formGroup.get('items').controls; let i = index; let last = last;">
+      {{ item.value.name }} - Cost: {{ item.value.cost }}
+    </option>
   </select>
 </form>
