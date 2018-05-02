@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-ng-weight-selection',
@@ -12,6 +12,10 @@ export class NgWeightSelectionComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  get items(): FormArray {
+    return this.formGroup.get('items') as FormArray;
   }
 
 }
