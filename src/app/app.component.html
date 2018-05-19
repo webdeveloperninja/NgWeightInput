@@ -1,12 +1,14 @@
 <div class="container">
-
+  <pre>
+    {{ selectedItem$ | async | json }}
+  </pre>
   <fieldset [attr.disabled]="disableWeightCost ? '' : null">
     <app-ng-weight-input [itemsForm]="itemsForm"></app-ng-weight-input>
   </fieldset>
   <div class="row mt-4">
     <div class="col-md-4">
       <fieldset>
-        <app-ng-weight-selection [formGroup]="itemsForm"></app-ng-weight-selection>
+        <app-ng-weight-selection [items]="items$ | async" [formGroup]="itemsForm"></app-ng-weight-selection>
       </fieldset>
     </div>
   </div>

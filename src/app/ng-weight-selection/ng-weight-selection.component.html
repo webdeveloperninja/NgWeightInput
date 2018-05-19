@@ -1,7 +1,7 @@
-<form [formGroup]="formGroup">
-  <select class="form-control">
-    <option *ngFor="let item of formGroup.get('items').controls; let i = index; let last = last;">
-      {{ item.value.name }} - Cost: {{ item.value.cost }}
+<form [formGroup]="weightSelectionForm">
+  <select formControlName="selectedItem" class="form-control">
+    <option *ngFor="let item of items;" [ngValue]="item">
+      {{ item.name }} - Cost: {{ item.cost }}
     </option>
   </select>
 </form>
