@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { Item } from '../../models/item';
 
 @Component({
   selector: 'app-ng-weight-selection',
@@ -7,15 +8,21 @@ import { FormGroup, FormArray } from '@angular/forms';
   styleUrls: ['./ng-weight-selection.component.scss']
 })
 export class NgWeightSelectionComponent implements OnInit {
-  @Input() formGroup: FormGroup;
+  @Input() items: Item[];
 
-  constructor() { }
+  @Output() selectedItemChange = new EventEmitter<Item>();
+
+  weightSelectionForm: FormGroup;
+
+  constructor(private readonly _fb: FormBuilder) {
+    this.weightSelectionForm = this._fb.group({
+      selectedItem: ['']
+    });
+  }
 
   ngOnInit() {
+    this.weightSelectionForm.valueChanges.subscribe(selected => {
+      this.selectedItemChange.emit(selected.selectedItem);
+    });
   }
-
-  get items(): FormArray {
-    return this.formGroup.get('items') as FormArray;
-  }
-
 }

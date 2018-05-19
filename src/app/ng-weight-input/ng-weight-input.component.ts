@@ -21,13 +21,16 @@ export class NgWeightInputComponent implements OnInit {
   dollarMask = masks.dollarMask;
   unit = 'gram';
 
-  @Input() itemsForm: FormGroup = this.itemsForm ? this.itemsForm : this.formBuilder.group({
-    items: this.formBuilder.array([this.createWeightCostForm()])
-  });
+  @Input()
+  itemsForm: FormGroup = this.itemsForm
+    ? this.itemsForm
+    : this.formBuilder.group({
+        items: this.formBuilder.array([this.createWeightCostForm()])
+      });
 
   weightCostInput: FormGroup;
 
-  @Output() selectedItems = new EventEmitter<Item[]>();
+  @Output() itemsChange = new EventEmitter<Item[]>();
 
   constructor(private formBuilder: FormBuilder) {
     this.createOrderForm();
@@ -43,7 +46,8 @@ export class NgWeightInputComponent implements OnInit {
     return this.formBuilder.group({
       [WeightCostFormKeys.weight]: ['', Validators.required],
       [WeightCostFormKeys.cost]: ['', Validators.required],
-      [WeightCostFormKeys.name]: ['', Validators.required]
+      [WeightCostFormKeys.name]: ['', Validators.required],
+      unit: [this.unit, Validators.required]
     });
   }
 
@@ -58,11 +62,8 @@ export class NgWeightInputComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.itemsForm.valueChanges.pipe(
-      takeUntil(this.isDestroyed$),
-      filter(orderForm => orderForm.items),
-    ).subscribe((items: Item[]) => {
-      this.selectedItems.next(items);
+    this.itemsForm.valueChanges.pipe(takeUntil(this.isDestroyed$), filter(orderForm => orderForm.items)).subscribe(selected => {
+      this.itemsChange.next(selected.items);
     });
   }
 
@@ -71,7 +72,7 @@ export class NgWeightInputComponent implements OnInit {
   }
 
   get weightPlaceholder(): string {
-    return `Weight ${this.unit}s`;
+    return `Weight ${this.unit} (s)`;
   }
 
   hasWeightRequiredError(index: number): boolean {
