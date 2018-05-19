@@ -10,7 +10,7 @@ import { Item } from '../../models/item';
 export class NgWeightSelectionComponent implements OnInit {
   @Input() items: Item[];
 
-  @Output() selectedItemChange = new EventEmitter();
+  @Output() selectedItemChange = new EventEmitter<Item>();
 
   weightSelectionForm: FormGroup;
 
@@ -21,8 +21,8 @@ export class NgWeightSelectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.weightSelectionForm.valueChanges.subscribe(selectedItem => {
-      this.selectedItemChange.emit(selectedItem);
+    this.weightSelectionForm.valueChanges.subscribe(selected => {
+      this.selectedItemChange.emit(selected.selectedItem);
     });
   }
 }

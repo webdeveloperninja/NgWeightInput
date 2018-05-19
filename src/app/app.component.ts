@@ -24,10 +24,7 @@ export class AppComponent implements OnInit {
 
   items$: Observable<Item[]>;
   selectedItem$: Observable<Item>;
-
   weightForm: FormGroup;
-
-  disableWeightCost = false;
 
   constructor(private readonly _formBuilder: FormBuilder, private readonly _ngWeightInput: NgWeightInputComponent) {
     this.createWeightForm();
@@ -41,15 +38,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  get itemsForm(): FormGroup {
-    return this.weightForm.get('itemsForm') as FormGroup;
+  ngOnInit() {
+    this.items$ = this.weightInput.itemsChange as Observable<Item[]>;
+    this.selectedItem$ = this.selectedItem.selectedItemChange as Observable<Item>;
   }
 
-  ngOnInit() {
-    const itemsCollection$ = this.weightInput.selectedItems as Observable<any>;
-    this.items$ = itemsCollection$.pipe(map(itemsCollection => itemsCollection.items));
-
-    const selectedItemCollection$ = this.selectedItem.selectedItemChange as Observable<any>;
-    this.selectedItem$ = selectedItemCollection$.pipe(map(itemsCollection => itemsCollection.selectedItem));
+  get itemsForm(): FormGroup {
+    return this.weightForm.get('itemsForm') as FormGroup;
   }
 }
