@@ -22,8 +22,8 @@
           <div class="danger" *ngIf="hasNameRequiredError(i)">Name is required</div>
         </div>
         <div class="col-md-3">
-          <button *ngIf="!last" (click)="removeSkew(i)" class="btn btn-danger">Remove</button>
-          <button *ngIf="last" (click)="addSkew(i)" class="btn btn-primary">Add</button>
+          <button *ngIf="!last" (click)="removeItem(i)" class="btn btn-danger">Remove</button>
+          <button *ngIf="last" (click)="addItem(i)" class="btn btn-primary">Add</button>
         </div>
       </div>
     </div>

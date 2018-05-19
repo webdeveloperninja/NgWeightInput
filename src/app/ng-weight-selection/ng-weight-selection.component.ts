@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 import { Item } from '../../models/item';
 
 @Component({
@@ -14,8 +15,8 @@ export class NgWeightSelectionComponent implements OnInit {
 
   weightSelectionForm: FormGroup;
 
-  constructor(private readonly _fb: FormBuilder) {
-    this.weightSelectionForm = this._fb.group({
+  constructor(private readonly _formBuilder: FormBuilder) {
+    this.weightSelectionForm = this._formBuilder.group({
       selectedItem: ['']
     });
   }

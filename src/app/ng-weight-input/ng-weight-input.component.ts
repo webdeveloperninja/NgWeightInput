@@ -1,9 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
-import * as masks from '../text-masks';
-import { Subject } from 'rxjs/Subject';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { filter, takeUntil } from 'rxjs/Operators';
+import { Subject } from 'rxjs/Subject';
+
 import { Item } from '../../models/item';
+import * as masks from '../text-masks';
+import { markFormGroupTouched } from '../forms';
 
 enum WeightCostFormKeys {
   weight = 'weight',
@@ -21,43 +23,26 @@ export class NgWeightInputComponent implements OnInit {
   dollarMask = masks.dollarMask;
   unit = 'gram';
 
-  @Input()
-  itemsForm: FormGroup = this.itemsForm
-    ? this.itemsForm
-    : this.formBuilder.group({
-        items: this.formBuilder.array([this.createWeightCostForm()])
-      });
-
-  weightCostInput: FormGroup;
+  itemsForm: FormGroup;
 
   @Output() itemsChange = new EventEmitter<Item[]>();
 
-  constructor(private formBuilder: FormBuilder) {
-    this.createOrderForm();
+  constructor(private _formBuilder: FormBuilder) {
+    this.createItemsForm();
   }
 
-  private createOrderForm(): void {
-    this.itemsForm = this.formBuilder.group({
-      items: this.formBuilder.array([this.createWeightCostForm()])
+  private createItemsForm(): void {
+    this.itemsForm = this._formBuilder.group({
+      items: this._formBuilder.array([this.createItem()])
     });
   }
 
-  private createWeightCostForm(): FormGroup {
-    return this.formBuilder.group({
+  private createItem(): FormGroup {
+    return this._formBuilder.group({
       [WeightCostFormKeys.weight]: ['', Validators.required],
       [WeightCostFormKeys.cost]: ['', Validators.required],
       [WeightCostFormKeys.name]: ['', Validators.required],
       unit: [this.unit, Validators.required]
-    });
-  }
-
-  public createItem(formBuilder: FormBuilder = null): FormGroup {
-    const builder = formBuilder ? formBuilder : this.formBuilder;
-
-    return builder.group({
-      [WeightCostFormKeys.weight]: ['', Validators.required],
-      [WeightCostFormKeys.cost]: ['', Validators.required],
-      [WeightCostFormKeys.name]: ['', Validators.required]
     });
   }
 
@@ -75,39 +60,21 @@ export class NgWeightInputComponent implements OnInit {
     return `Weight ${this.unit} (s)`;
   }
 
-  hasWeightRequiredError(index: number): boolean {
-    const weightControl = this.getItemControl(index, WeightCostFormKeys.weight);
-
-    return weightControl.touched && weightControl.errors && weightControl.errors.required;
-  }
-
-  hasCostRequiredError(index: number): boolean {
-    const costControl = this.getItemControl(index, WeightCostFormKeys.cost);
-
-    return costControl.touched && costControl.errors && costControl.errors.required;
-  }
-
-  hasNameRequiredError(index: number): boolean {
-    const nameControl = this.getItemControl(index, WeightCostFormKeys.name);
-
-    return nameControl.touched && nameControl.errors && nameControl.errors.required;
-  }
-
   getItemControl(index: number, controlName: WeightCostFormKeys): FormControl {
     const currentWeightCostControl = this.items.controls[index] as FormGroup;
+
     return currentWeightCostControl.controls[controlName] as FormControl;
   }
 
-  addSkew(index: number): void {
+  addItem(index: number): void {
     if (this.isItemValid(index)) {
       this.items.push(this.createItem());
     } else {
-      this.setItemAsDirty(index);
       this.setItemAsTouched(index);
     }
   }
 
-  removeSkew(index: number): void {
+  removeItem(index: number): void {
     this.items.removeAt(index);
   }
 
@@ -115,21 +82,25 @@ export class NgWeightInputComponent implements OnInit {
     return this.items.controls[index].valid;
   }
 
-  setItemAsDirty(index: number): void {
-    return this.items.controls[index].markAsDirty();
-  }
-
   setItemAsTouched(index: number): void {
-    return this.markFormGroupTouched(this.items.controls[index] as FormGroup);
+    return markFormGroupTouched(this.items.controls[index] as FormGroup);
   }
 
-  private markFormGroupTouched(formGroup: FormGroup) {
-    (<any>Object).values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
+  private hasWeightRequiredError(index: number): boolean {
+    const weightControl = this.getItemControl(index, WeightCostFormKeys.weight);
 
-      if (control.controls) {
-        control.controls.forEach(c => this.markFormGroupTouched(c));
-      }
-    });
+    return weightControl.touched && weightControl.errors && weightControl.errors.required;
+  }
+
+  private hasCostRequiredError(index: number): boolean {
+    const costControl = this.getItemControl(index, WeightCostFormKeys.cost);
+
+    return costControl.touched && costControl.errors && costControl.errors.required;
+  }
+
+  private hasNameRequiredError(index: number): boolean {
+    const nameControl = this.getItemControl(index, WeightCostFormKeys.name);
+
+    return nameControl.touched && nameControl.errors && nameControl.errors.required;
   }
 }
