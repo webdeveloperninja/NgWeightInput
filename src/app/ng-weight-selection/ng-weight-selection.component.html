@@ -1,7 +1,7 @@
 <form [formGroup]="weightSelectionForm">
   <select formControlName="selectedItem" class="form-control">
     <option *ngFor="let item of items;" [ngValue]="item">
-      {{ item.name }} - Cost: {{ item.cost }}
+      {{ item.weight }}{{item.unit}}(s) {{ item.name }} - Cost: {{ item.cost }}
     </option>
   </select>
 </form>

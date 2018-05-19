@@ -46,7 +46,8 @@ export class NgWeightInputComponent implements OnInit {
     return this.formBuilder.group({
       [WeightCostFormKeys.weight]: ['', Validators.required],
       [WeightCostFormKeys.cost]: ['', Validators.required],
-      [WeightCostFormKeys.name]: ['', Validators.required]
+      [WeightCostFormKeys.name]: ['', Validators.required],
+      unit: [this.unit, Validators.required]
     });
   }
 
@@ -71,7 +72,7 @@ export class NgWeightInputComponent implements OnInit {
   }
 
   get weightPlaceholder(): string {
-    return `Weight ${this.unit}s`;
+    return `Weight ${this.unit} (s)`;
   }
 
   hasWeightRequiredError(index: number): boolean {
